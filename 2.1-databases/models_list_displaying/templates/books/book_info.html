@@ -16,5 +16,11 @@
                 </div>
             {% endfor %}
         </div>
+        {% if back_page != '' %}
+        <a class="button button-primary" href="http://127.0.0.1:8000/books/{{ back_page.pub_date|date:'Y-m-d' }}">< {{ back_page.pub_date|date:'Y-m-d' }}</a>
+        {% endif %}
+        {% if next_page != '' %}
+        <a class="button button-primary" href="http://127.0.0.1:8000/books/{{ next_page.pub_date|date:'Y-m-d' }}">{{ next_page.pub_date|date:'Y-m-d' }} ></a>
+        {% endif %}
     </div>
 {% endblock %}

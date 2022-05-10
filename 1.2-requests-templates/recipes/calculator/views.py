@@ -41,16 +41,16 @@ def handler(request, recipe):
     return context
 
 
-def omlet(request):
-    context = handler(request, 'omlet')
+def recipes(request, item):
+    context = handler(request, item)
     return render(request, 'calculator/index.html', context)
 
 
-def pasta(request):
-    context = handler(request, 'pasta')
-    return render(request, 'calculator/index.html', context)
-
-
-def buter(request):
-    context = handler(request, 'buter')
-    return render(request, 'calculator/index.html', context)
+# def pasta(request):
+#     context = handler(request, 'pasta')
+#     return render(request, 'calculator/index.html', context)
+#
+#
+# def buter(request):
+#     context = handler(request, 'buter')
+#     return render(request, 'calculator/index.html', context)
