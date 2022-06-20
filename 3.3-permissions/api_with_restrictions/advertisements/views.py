@@ -37,17 +37,26 @@ class AdvertisementViewSet(ModelViewSet):
     def add_favourites(self, request, pk):
         """Добавление сообщения в избранное."""
 
-        creator = Advertisement.objects.filter(id=pk).exclude(status="DRAFT")
-        result = AdvertisementSerializer(creator, many=True)
-        if len(result.data) == 0:
-            return Response({'Message': 'Неправильный ID объявления'})
-        if result.data[0]['creator']['username'] == str(self.request.user):
+        advert = Advertisement.objects.get(pk=pk)
+        if advert.creator == request.user:
             return Response({'Message': 'Вы владелец объявления'})
-        if not Favorites.objects.filter(creator=self.request.user, advertisement=pk):
-            Favorites.objects.create(creator=self.request.user, advertisement_id=pk)
+        if not Favorites.objects.filter(creator=self.request.user, advertisement=pk).exists():
+            Favorites.objects.create(creator=self.request.user, advertisement=advert)
             return Response({'Message': 'OK'})
         else:
             return Response({'Message': 'Объявление уже добавлено в избранные'})
+
+        # creator = Advertisement.objects.filter(id=pk).exclude(status="DRAFT")
+        # result = AdvertisementSerializer(creator, many=True)
+        # if len(result.data) == 0:
+        #     return Response({'Message': 'Неправильный ID объявления'})
+        # if result.data[0]['creator']['username'] == str(self.request.user):
+        #     return Response({'Message': 'Вы владелец объявления'})
+        # if not Favorites.objects.filter(creator=self.request.user, advertisement=pk):
+        #     Favorites.objects.create(creator=self.request.user, advertisement_id=pk)
+        #     return Response({'Message': 'OK'})
+        # else:
+        #     return Response({'Message': 'Объявление уже добавлено в избранные'})
 
     @action(detail=False)
     def list_favourites(self, request):
